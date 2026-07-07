@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webaudit"
+version = "0.1.0"
+description = "Website Security Audit CLI"
+authors = [
+    {name = "Jenius Calvin"}
+]
+requires-python = ">=3.12"
+
+dependencies = [
+    "requests",
+    "colorama"
+]
+
+[project.scripts]
+webaudit = "audit.cli:main"
+
+[tool.setuptools]
+packages = ["audit"]

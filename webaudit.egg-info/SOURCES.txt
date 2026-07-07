@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+audit/__init__.py
+audit/banner.py
+audit/cli.py
+audit/version.py
+webaudit.egg-info/PKG-INFO
+webaudit.egg-info/SOURCES.txt
+webaudit.egg-info/dependency_links.txt
+webaudit.egg-info/entry_points.txt
+webaudit.egg-info/requires.txt
+webaudit.egg-info/top_level.txt

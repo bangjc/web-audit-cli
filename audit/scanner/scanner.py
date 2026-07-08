@@ -1,6 +1,6 @@
 from audit.scanner.dns import DNSScanner
 from audit.scanner.http import HTTPScanner
-
+from audit.scanner.ssl import SSLScanner
 
 class Scanner:
 
@@ -12,3 +12,5 @@ class Scanner:
         DNSScanner(self.target).run()
 
         HTTPScanner(self.target).run()
+
+        SSLScanner(self.target).run()

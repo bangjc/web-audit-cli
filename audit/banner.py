@@ -4,8 +4,9 @@ init(autoreset=True)
 
 
 def show_banner():
-    print(Fore.CYAN + "=" * 50)
-    print("         WEB AUDIT CLI")
-    print("     Website Security Auditor")
-    print("=" * 50)
+
+    print(Fore.CYAN + "=" * 60)
+    print("               WEB AUDIT CLI v0.1")
+    print("          Website Security Auditor")
+    print("=" * 60)
     print(Style.RESET_ALL)

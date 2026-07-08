@@ -1,6 +1,8 @@
 import time
 import requests
 
+from audit.utils.printer import title, item
+
 
 class HTTPScanner:
 
@@ -8,9 +10,11 @@ class HTTPScanner:
         self.target = target
 
     def run(self):
-        print("\n[2/2] HTTP Request")
+
+        title("HTTP Request")
 
         try:
+
             start = time.perf_counter()
 
             response = requests.get(
@@ -24,10 +28,11 @@ class HTTPScanner:
 
             elapsed = (time.perf_counter() - start) * 1000
 
-            print(f"    URL          : {response.url}")
-            print(f"    Status       : {response.status_code}")
-            print(f"    Server       : {response.headers.get('Server', '-')}")
-            print(f"    Response     : {elapsed:.2f} ms")
+            item("URL", response.url)
+            item("Status", response.status_code)
+            item("Server", response.headers.get("Server", "-"))
+            item("Response", f"{elapsed:.2f} ms")
 
         except Exception as e:
-            print(f"    ERROR        : {e}")
+
+            item("ERROR", e)

@@ -1,11 +1,13 @@
 import argparse
 
 from audit.banner import show_banner
-from audit.scanner import Scanner
+
 from audit.scanner.dns import DNSScanner
 from audit.scanner.http import HTTPScanner
 
+
 def main():
+
     parser = argparse.ArgumentParser(
         description="Website Security Audit CLI"
     )
@@ -21,12 +23,11 @@ def main():
 
     print(f"Target : {args.target}\n")
 
+    # DNS Scanner
+    from audit.scanner.scanner import Scanner
     scanner = Scanner(args.target)
+    scanner.run()
 
-    scanner.dns_lookup()
-    scanner.http_request()
-    dns = DNSScanner(args.target)
-    dns.run()
 
-    http = HTTPScanner(args.target)
-    http.run()
+if __name__ == "__main__":
+    main()

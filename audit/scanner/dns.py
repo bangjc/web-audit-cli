@@ -7,18 +7,6 @@ class DNSScanner:
     def __init__(self, target):
         self.target = target
 
-    # def run(self):
-    #     print("[1/2] DNS Lookup")
-
-    #     try:
-    #         hostname = socket.getfqdn(self.target)
-    #         ip = socket.gethostbyname(self.target)
-
-    #         print(f"    Hostname : {hostname}")
-    #         print(f"    IP       : {ip}")
-
-    #     except Exception as e:
-    #         print(f"    ERROR    : {e}")
     def run(self):
 
         title("DNS Lookup")
@@ -34,3 +22,9 @@ class DNSScanner:
         except Exception as e:
 
             item("ERROR", e)
+        
+        return {
+            "success": True,
+            "hostname": hostname,
+            "ip": ip
+        }

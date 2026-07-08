@@ -36,3 +36,9 @@ class HTTPScanner:
         except Exception as e:
 
             item("ERROR", e)
+        
+        return {
+            "status": response.status_code,
+            "response_time": elapsed,
+            "server": response.headers.get("Server")
+        }

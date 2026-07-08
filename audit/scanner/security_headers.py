@@ -51,3 +51,7 @@ class SecurityHeaderScanner:
         except Exception as e:
 
             item("ERROR", str(e))
+        
+        return {
+            "score": score
+        }

@@ -39,3 +39,8 @@ class SSLScanner:
 
             item("Status", "FAILED")
             item("Error", str(e))
+            
+        return {
+            "valid": True,
+            "issuer": issuer_name
+        }

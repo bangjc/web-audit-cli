@@ -4,24 +4,42 @@ from audit.utils.printer import title, item
 class ScoreEngine:
 
     def __init__(self):
+
         self.score = 0
 
-    def add_dns(self, success):
-        if success:
+        self.summary = {}
+
+    def process(self, result):
+
+        # DNS
+        dns_ok = result["dns"]["success"]
+        self.summary["DNS"] = "PASS" if dns_ok else "FAIL"
+
+        if dns_ok:
             self.score += 10
 
-    def add_http(self, status):
-        if status == 200:
+        # HTTP
+        http_ok = result["http"]["status"] == 200
+        self.summary["HTTP"] = "PASS" if http_ok else "FAIL"
+
+        if http_ok:
             self.score += 10
 
-    def add_ssl(self, valid):
-        if valid:
+        # SSL
+        ssl_ok = result["ssl"]["valid"]
+        self.summary["SSL"] = "PASS" if ssl_ok else "FAIL"
+
+        if ssl_ok:
             self.score += 20
 
-    def add_security_headers(self, score):
-        self.score += score * 10
+        # Security Headers
+        header_score = result["security_headers"]["score"]
 
-    def risk_level(self):
+        self.summary["Security Headers"] = f"{header_score}/6"
+
+        self.score += header_score * 10
+
+    def risk(self):
 
         if self.score >= 90:
             return "LOW"
@@ -38,5 +56,11 @@ class ScoreEngine:
 
         title("SUMMARY")
 
+        for key, value in self.summary.items():
+            item(key, value)
+
+        print()
+
         item("Overall Score", f"{self.score}/100")
-        item("Risk Level", self.risk_level())
+
+        item("Risk Level", self.risk())

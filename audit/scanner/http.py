@@ -38,7 +38,12 @@ class HTTPScanner:
             item("ERROR", e)
         
         return {
+            "success": True,
             "status": response.status_code,
+            "url": response.url,
+            "headers": dict(response.headers),
+            "html": response.text,
+            "cookies": response.cookies.get_dict(),
+            "server": response.headers.get("Server", "-"),
             "response_time": elapsed,
-            "server": response.headers.get("Server")
         }

@@ -1,10 +1,14 @@
 import argparse
 
+from audit import detector
 from audit.banner import show_banner
 
+from audit.detector import server
+from audit.scanner import technology
 from audit.scanner.dns import DNSScanner
 from audit.scanner.http import HTTPScanner
 from audit.engine.score import ScoreEngine
+from audit.detector.server import ServerDetector
 
 
 def main():
@@ -33,8 +37,14 @@ def main():
     engine = ScoreEngine()
 
     engine.process(results)
-
     engine.report()
+    
+    detector = ServerDetector(results["http"])
+    server = detector.detect()
+    print(server)
+    
+    from audit.utils.printer import technology
+    technology(server)
 
 
 if __name__ == "__main__":

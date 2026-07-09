@@ -1,38 +1,76 @@
-import socket
-import time
+import whois
+from datetime import datetime, timezone
 
-import requests
+from audit.utils.printer import title, item
 
 
-class Scanner:
+class WhoisScanner:
 
     def __init__(self, target):
         self.target = target
 
-    def dns_lookup(self):
-        print("[1/3] DNS Lookup...")
+    def run(self):
+
+        title("WHOIS Information")
 
         try:
-            ip = socket.gethostbyname(self.target)
-            print(f"    IP Address : {ip}")
+
+            data = whois.whois(self.target)
+
+            registrar = data.registrar
+
+            creation = data.creation_date
+            expiration = data.expiration_date
+            updated = data.updated_date
+
+            # Beberapa registrar mengembalikan list
+            if isinstance(creation, list):
+                creation = creation[0]
+
+            if isinstance(expiration, list):
+                expiration = expiration[0]
+
+            if isinstance(updated, list):
+                updated = updated[0]
+
+            item("Registrar", registrar or "-")
+            item("Created", creation or "-")
+            item("Expires", expiration or "-")
+            item("Updated", updated or "-")
+
+            age = None
+
+            if creation:
+                if creation.tzinfo is None:
+                    now = datetime.now()
+                else:
+                    now = datetime.now(creation.tzinfo)
+
+                age_days = (now - creation).days
+                age_years = age_days // 365
+
+                item("Domain Age", f"{age_years} Years")
+            else:
+                item("Domain Age", "-")
+
+            return {
+                "success": True,
+                "data": {
+                    "registrar": registrar,
+                    "created": creation,
+                    "expires": expiration,
+                    "updated": updated,
+                    "age": age,
+                },
+                "errors": []
+            }
+
         except Exception as e:
-            print(f"    ERROR : {e}")
 
-    def http_request(self):
-        print("\n[2/3] HTTP Request...")
+            item("ERROR", str(e))
 
-        try:
-            start = time.perf_counter()
-
-            response = requests.get(
-                f"https://{self.target}",
-                timeout=10
-            )
-
-            elapsed = (time.perf_counter() - start) * 1000
-
-            print(f"    Status Code : {response.status_code}")
-            print(f"    Response Time : {elapsed:.2f} ms")
-
-        except Exception as e:
-            print(f"    ERROR : {e}")
+            return {
+                "success": False,
+                "data": {},
+                "errors": [str(e)]
+            }
